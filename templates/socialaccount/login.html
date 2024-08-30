@@ -1,0 +1,39 @@
+{% extends "socialaccount/base.html" %}
+{% load i18n account %}
+
+{% block content %}
+    <div class="login-box">
+        <div class="login-logo">
+            <b>HORC Elections - 2023</b>
+        </div>
+
+        <div class="login-box-body" >
+            <p class="login-box-msg">Continue using Institute Id </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-s-4">
+                        <button type="submit" class="btn btn-primary btn-block btn-flat btn-lg" name="login">
+                            <i class="fa fa-sign-in"></i> {% trans "Sign In" %}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id='markdown'></div>
+    </div>
+ 
+{% endblock content %}
+
+{% block rules %}
+   ## Rules
+    - #### Each student can vote only once.
+    - #### Login using your Institute e-mail ID only.
+    - #### Each student can vote only to their respective hostels.
+    - #### Timings of portal `8.00 am` - ` 6.00pm`
+    - #### In case of any discrepancies kindly contact Lekhraj Saini(+91 89559 50049) and Sachin Sahu(+91 87072 96776)
+
+{% endblock rules %}
+
+
