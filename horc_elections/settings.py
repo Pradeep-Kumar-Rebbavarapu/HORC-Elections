@@ -1,15 +1,15 @@
 import environ
 import dj_database_url
 from pathlib import Path
-
+import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
 environ.Env.read_env(Path.joinpath(BASE_DIR, '.env'))
 
 SECRET_KEY = env("SECRET_KEY")
-# DEBUG = env("DEBUG")
-ALLOWED_HOSTS = [env('HOST_URL'),"localhost",'web-production-6d4b.up.railway.app']  
+DEBUG = False
+ALLOWED_HOSTS = [env('HOST_URL'),"localhost",'web-production-6d4b.up.railway.app','127.0.0.1']  
 CSRF_TRUSTED_ORIGINS = ['https://web-production-6d4b.up.railway.app']
 
 # Application definition
@@ -44,7 +44,7 @@ MIDDLEWARE = [
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [Path.joinpath(BASE_DIR, "templates")],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -124,10 +124,39 @@ LOGIN_URL = "/accounts/google/login/"
 LOGIN_REDIRECT_URL = "/"
 LOGIN_EXEMPT_URLS = ["/admin/*"]
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+STATIC_URL = "/static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [Path.joinpath(BASE_DIR, "static")]
-STATIC_ROOT = Path.joinpath(BASE_DIR, "staticfiles/")
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 3000
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': './error.log',  
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}
+
+
+WHITENOISE_MANIFEST_STRICT = False
